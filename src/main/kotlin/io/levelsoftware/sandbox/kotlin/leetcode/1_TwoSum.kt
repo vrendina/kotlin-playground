@@ -29,8 +29,11 @@ fun naiveTwoSum(nums: IntArray, target: Int): IntArray {
     nums.forEachIndexed { outerIndex, outerNum ->
         nums.forEachIndexed { innerIndex, innerNum ->
             // Not allowed to use the same element twice
-            if (innerIndex != outerIndex) {
-                if (outerNum + innerNum == target) return intArrayOf(outerNum, innerNum)
+            if (innerIndex != outerIndex && outerNum + innerNum == target) {
+                return when {
+                    outerIndex > innerIndex -> intArrayOf(innerIndex, outerIndex)
+                    else -> intArrayOf(outerIndex, innerIndex)
+                }
             }
         }
     }
