@@ -4,7 +4,6 @@ import io.levelsoftware.sandbox.kotlin.getRandomString
 import io.levelsoftware.sandbox.kotlin.logMessage
 import io.levelsoftware.sandbox.kotlin.measureAverageRuntime
 import java.util.*
-import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 
 /*
@@ -28,18 +27,15 @@ fun main(args: Array<String>) {
     logMessage(longestSubstring.lengthOfLongestSubStringHashMap("abba").toString())
 
     val randomString = getRandomString(100000)
-    val latch = CountDownLatch(2)
 
     thread(true) {
         val hashTime = measureAverageRuntime { longestSubstring.lengthOfLongestSubStringHashMap(randomString) }
         logMessage("HashMap time: $hashTime ns")
-        latch.countDown()
     }
 
     thread(true) {
         val arrayTime = measureAverageRuntime { longestSubstring.lengthOfLongestSubStringArray(randomString) }
         logMessage("Array time: $arrayTime ns")
-        latch.countDown()
     }
 }
 
