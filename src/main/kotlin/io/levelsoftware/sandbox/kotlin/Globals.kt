@@ -12,3 +12,11 @@ fun measureAverageRuntime(runs: Int = 10000, code: () -> Unit): Long {
     (0 until runs).forEach { sum += measureNanoTime(code) }
     return sum / runs
 }
+
+fun determineStackSize(count: Int = 1) {
+    try {
+        determineStackSize(count + 1)
+    } catch(exception: StackOverflowError) {
+        System.err.print("Stack size $count\n")
+    }
+}
