@@ -1,5 +1,7 @@
 package io.levelsoftware.sandbox.kotlin
 
+import java.util.*
+import kotlin.streams.asSequence
 import kotlin.system.measureNanoTime
 
 fun logMessage(message: String) {
@@ -19,4 +21,13 @@ fun determineStackSize(count: Int = 1) {
     } catch(exception: StackOverflowError) {
         System.err.print("Stack size $count\n")
     }
+}
+
+// https://stackoverflow.com/a/46944275/5125812
+fun getRandomString(length: Long): String {
+    val source = "abcdefghijklmnopqrstuvwxyz"
+    return Random().ints(length, 0, source.length)
+        .asSequence()
+        .map(source::get)
+        .joinToString("")
 }
