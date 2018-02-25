@@ -26,9 +26,12 @@ fun main(args: Array<String>) {
  First solution runs in O(N^2) time complexity
  */
 fun naiveTwoSum(nums: IntArray, target: Int): IntArray {
-    nums.forEach { outerNum ->
-        nums.forEach { innerNum ->
-            if (outerNum + innerNum == target) return intArrayOf(outerNum, innerNum)
+    nums.forEachIndexed { outerIndex, outerNum ->
+        nums.forEachIndexed { innerIndex, innerNum ->
+            // Not allowed to use the same element twice
+            if (innerIndex != outerIndex) {
+                if (outerNum + innerNum == target) return intArrayOf(outerNum, innerNum)
+            }
         }
     }
     return IntArray(0)
