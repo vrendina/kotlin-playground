@@ -1,6 +1,8 @@
 package io.levelsoftware.sandbox.kotlin.leetcode
 
 import io.levelsoftware.sandbox.kotlin.logMessage
+import io.levelsoftware.sandbox.kotlin.measureAverageRuntime
+import java.util.*
 
 /*
 Given an array of integers, return indices of the two numbers such that they add up to a specific target.
@@ -15,11 +17,36 @@ return [0, 1].
  */
 
 fun main(args: Array<String>) {
-    val nums = intArrayOf(2, 7, 11, 15)
-    val target = 9
+    val nums = generateRandomIntArray(1000)
+    val target = nums[500] + nums[750]
 
-    val result = naiveTwoSum(nums, target)
-    logMessage(result.toSet().toString())
+    logMessage(optimizedTwoSum(nums, target).toSet().toString())
+    logMessage(naiveTwoSum(nums, target).toSet().toString())
+
+    val naiveTime = measureAverageRuntime { naiveTwoSum(nums, target) }
+    val optimizedTime = measureAverageRuntime { optimizedTwoSum(nums, target) }
+
+    logMessage("Naive: $naiveTime ns")
+    logMessage("Optimized: $optimizedTime ns")
+    logMessage("Delta: ${naiveTime - optimizedTime} ns")
+}
+
+/*
+  Solution runs in O(N) time complexity
+  Only a single iteration of the input numbers array is required and each lookup in the HashMap only
+  requires O(1) time complexity.
+ */
+fun optimizedTwoSum(nums: IntArray, target: Int): IntArray {
+    // Contains number and index of the number
+    val map = HashMap<Int, Int>()
+
+    nums.forEachIndexed { index, num ->
+        val compliment = target - num
+        val complimentIndex = map[compliment]
+        if (complimentIndex != null) return intArrayOf(complimentIndex, index)
+        map[num] = index
+    }
+    throw IllegalArgumentException("Could not find target sum in number list")
 }
 
 /*
@@ -38,4 +65,11 @@ fun naiveTwoSum(nums: IntArray, target: Int): IntArray {
         }
     }
     return IntArray(0)
+}
+
+fun generateRandomIntArray(count: Int): IntArray {
+    val random = Random()
+    val numbers = arrayListOf<Int>()
+    (0 until count).forEach { numbers.add(random.nextInt()) }
+    return numbers.toIntArray()
 }
