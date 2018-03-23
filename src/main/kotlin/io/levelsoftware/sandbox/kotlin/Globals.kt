@@ -31,3 +31,5 @@ fun getRandomString(length: Long): String {
         .map(source::get)
         .joinToString("")
 }
+
+fun getRandomIntArray(length: Long): IntArray = Random().ints(length).toArray()
